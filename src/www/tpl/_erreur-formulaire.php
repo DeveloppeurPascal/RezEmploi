@@ -10,17 +10,24 @@ if (isset($erreurs) && is_array($erreurs) && (count($erreurs) > 0)) {
         erreurs = <?php print(json_encode($erreurs)); ?>;
         focus = false;
         for (let i = 0; i < erreurs.length; i++) {
+            msgtraite = false;
             err = erreurs[i];
-            fld = $('#' + err.champ);
-            if (fld) {
-                if (!focus) {
-                    fld.focus();
-                    focus = true;
+            if (err.champ.length > 0) {
+                fld = $('#' + err.champ);
+                if (fld) {
+                    if (!focus) {
+                        fld.focus();
+                        focus = true;
+                    }
+                    if (err.texte != '') {
+                        p = $('<p>').text(err.texte).addClass('erreur');
+                        fld.after(p);
+                        msgtraite = true;
+                    }
                 }
-                if (err.texte != '') {
-                    p = $('<p>').text(err.texte).addClass('erreur');
-                    fld.after(p);
-                }
+            }
+            if (!msgtraite) {
+                window.alert(err.texte);
             }
         }
     </script>
