@@ -20,6 +20,7 @@ define("KEY_SIGNUP", "5f4h25fg4h");
 define("KEY_PASSWORD", "fd2y5ju4gfds");
 define("KEY_SESSION", "dfu8ikezr3");
 define("KEY_SESSION_DROITS", "fg5j725e4fg");
+define("KEY_VERIF", "f5h4=fnDFG25dsfg4");
 
 
 //define("TemplateFolder", "tpl-fghjg4h2g45");

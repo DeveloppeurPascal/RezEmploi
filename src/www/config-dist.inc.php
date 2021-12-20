@@ -88,6 +88,10 @@ if (!defined("KEY_SESSION"))
 if (!defined("KEY_SESSION_DROITS"))
     define("KEY_SESSION_DROITS", "");
 
+// KEY_VERIF : clé utilisée pour les calculs de checksum dans les écrans de mise à jour
+if (!defined("KEY_VERIF"))
+    define("KEY_VERIF", "");
+
 // **********
 // Paramètres divers
 // **********
