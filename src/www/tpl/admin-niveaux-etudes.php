@@ -36,7 +36,7 @@ if (("add" == $op) && $dsp) {
     } else {
         $qry = $db->prepare("insert into niveaux_etudes (priv_key, libelle) values (:pk, :l)");
         $qry->execute(array(":pk" => generer_identifiant(10), ":l" => $libelle));
-        ajoute_info("\"" . htmlentities($libelle) . "\" ajouté.");
+        ajoute_info("\"" . $libelle . "\" ajouté.");
         $mode = "add";
         $libelle = "";
     }
