@@ -120,13 +120,13 @@ switch ($mode) {
         $PageTitle = "Ajout d'une langue";
         break;
     case    "chg":
-        $PageTitle = "Modification d'une langue";
+        $PageTitle = "Modification de la langue";
         break;
     case    "dlt":
-        $PageTitle = "Suppression d'une langue";
+        $PageTitle = "Suppression de la langue";
         break;
     case    "dsp":
-        $PageTitle = "Détail d'une langue";
+        $PageTitle = "Détail de la langue";
         break;
     case    "lst":
         $PageTitle = "Liste des langues";
