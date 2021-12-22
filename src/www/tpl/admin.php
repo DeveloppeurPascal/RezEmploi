@@ -17,6 +17,7 @@ require_once(__DIR__ . "/_header.php");
     <ul>
         <li><a href="admin-langues.php">Gestion des langues</a></li>
         <li><a href="admin-niveaux-etudes.php">Gestion des niveaux d'études</a></li>
+        <li><a href="admin-pays.php">Gestion des pays</a></li>
     </ul><?php
 require_once(__DIR__ . "/_footer.php");
 
