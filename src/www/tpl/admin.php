@@ -19,6 +19,7 @@ require_once(__DIR__ . "/_header.php");
         <li><a href="admin-niveaux-etudes.php">Gestion des niveaux d'études</a></li>
         <li><a href="admin-pays.php">Gestion des pays</a></li>
         <li><a href="admin-reseaux-sociaux.php">Gestion des réseaux sociaux</a></li>
+        <li><a href="admin-rubriquescv.php">Gestion des rubriques sur les CV</a></li>
     </ul><?php
 require_once(__DIR__ . "/_footer.php");
 
@@ -26,3 +27,5 @@ require_once(__DIR__ . "/_footer.php");
 // TODO : CRUD entreprises
 // TODO : tous les accès "modération"
 // TODO : gestion de toutes les tables du site
+
+// TODO : penser à traiter les liens "super admin" de façon différente des liens "admin" simples
