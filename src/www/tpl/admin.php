@@ -16,6 +16,7 @@ require_once(__DIR__ . "/_header.php");
     <h2>Tables générales</h2>
     <ul>
         <li><a href="admin-langues.php">Gestion des langues</a></li>
+        <li><a href="admin-niveaux-etudes.php">Gestion des niveaux d'études</a></li>
     </ul><?php
 require_once(__DIR__ . "/_footer.php");
 
