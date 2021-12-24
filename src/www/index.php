@@ -35,8 +35,8 @@ if (is_object($db)) {
     }
 //    print("x" . $page_demandee . "x");
 
-    // Si pas de fichier demandé ou fchier index.php, on bascule sur la page "home.php" qui correspond au template de l'accueil du site
-    if (("" == $page_demandee) || ("index.php" == $page_demandee)) $page_demandee = "home.php";
+    // Si pas de fichier demandé ou fchier index.php, on bascule sur la page "index-public.php" qui correspond au template de l'accueil du site
+    if (("" == $page_demandee) || ("index.php" == $page_demandee)) $page_demandee = "index-public.php";
 
     // On retire les caractères "douteux" du nom du fichier demandé pour être sereins lors de l'accès au disque dur
     for ($i = 0; $i < strlen($page_demandee) - 1; $i++) {
