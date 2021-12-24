@@ -170,7 +170,8 @@ require_once(__DIR__ . "/_header.php");
                     <tbody>
                     <tr>
                         <th scope="col">ID</th>
-                        <th scope="col">Libellé</th>
+                        <th scope="col">Emplacement</th>
+                        <th scope="col">Titre</th>
                         <th scope="col">
                             <button type="button" class="btn btn-primary" onclick="btnAjouterClick();">Ajouter</button>
                         </th>
@@ -179,6 +180,7 @@ require_once(__DIR__ . "/_header.php");
                         <tr>
                             <td><?php print($record->code); ?></td>
                             <td><?php print(htmlentities($record->libelle)); ?></td>
+                            <td><?php print(htmlentities($record->titre)); ?></td>
                             <td>
                                 <button type="button" class="btn btn-primary"
                                         onclick="btnAfficherClick(<?php print($record->code); ?>);">Afficher
@@ -208,7 +210,7 @@ require_once(__DIR__ . "/_header.php");
                             if (("dsp" == $mode) || ("dlt" == $mode)) { ?>
                                 <div class="row">
                                     <div class="col">
-                                        Libellé : <?php print(htmlentities($libelle)); ?>
+                                        Emplacement : <?php print(htmlentities($libelle)); ?>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -225,7 +227,7 @@ require_once(__DIR__ . "/_header.php");
                             if (("add" == $mode) || ("chg" == $mode)) { ?>
                                 <div class="row">
                                     <div class="col">
-                                        <input type="text" class="form-control" placeholder="Libellé" id="libelle"
+                                        <input type="text" class="form-control" placeholder="Emplacement" id="libelle"
                                                name="libelle"
                                                value="<?php print(isset($libelle) ? htmlentities($libelle) : ""); ?>"
                                                autofocus>
