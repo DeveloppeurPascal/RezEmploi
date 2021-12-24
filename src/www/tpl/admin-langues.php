@@ -157,7 +157,7 @@ require_once(__DIR__ . "/_header.php");
                     <tbody>
                     <tr>
                         <th scope="col">ID</th>
-                        <th scope="col">Libellé</th>
+                        <th scope="col">Langue</th>
                         <th scope="col">
                             <button type="button" class="btn btn-primary" onclick="btnAjouterClick();">Ajouter</button>
                         </th>
