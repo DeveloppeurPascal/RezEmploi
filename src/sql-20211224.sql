@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Dec 20, 2021 at 08:47 PM
+-- Generation Time: Dec 24, 2021 at 08:42 PM
 -- Server version: 5.7.23
 -- PHP Version: 7.2.8
 
@@ -79,6 +79,21 @@ CREATE TABLE `rubriquescv`
     `code`     int(11) NOT NULL,
     `priv_key` char(10)     NOT NULL,
     `libelle`  varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `textes`
+--
+
+CREATE TABLE `textes`
+(
+    `code`     int(11) NOT NULL,
+    `priv_key` char(10)     NOT NULL,
+    `libelle`  varchar(255) NOT NULL,
+    `titre`    varchar(255) NOT NULL DEFAULT '',
+    `texte`    text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -188,6 +203,13 @@ ALTER TABLE `rubriquescv`
   ADD UNIQUE KEY `rubriquescv_par_libelle` (`libelle`,`code`);
 
 --
+-- Indexes for table `textes`
+--
+ALTER TABLE `textes`
+    ADD PRIMARY KEY (`code`),
+  ADD UNIQUE KEY `textes_par_libelle` (`libelle`,`code`);
+
+--
 -- Indexes for table `types_contrats`
 --
 ALTER TABLE `types_contrats`
@@ -248,6 +270,12 @@ ALTER TABLE `reseaux_sociaux`
 -- AUTO_INCREMENT for table `rubriquescv`
 --
 ALTER TABLE `rubriquescv`
+    MODIFY `code` int (11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `textes`
+--
+ALTER TABLE `textes`
     MODIFY `code` int (11) NOT NULL AUTO_INCREMENT;
 
 --
