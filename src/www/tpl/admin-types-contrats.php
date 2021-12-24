@@ -157,7 +157,7 @@ require_once(__DIR__ . "/_header.php");
                     <tbody>
                     <tr>
                         <th scope="col">ID</th>
-                        <th scope="col">Libellé</th>
+                        <th scope="col">Type de contrat</th>
                         <th scope="col">
                             <button type="button" class="btn btn-primary" onclick="btnAjouterClick();">Ajouter</button>
                         </th>
@@ -195,14 +195,15 @@ require_once(__DIR__ . "/_header.php");
                             if (("dsp" == $mode) || ("dlt" == $mode)) { ?>
                                 <div class="row">
                                     <div class="col">
-                                        Langue : <?php print(htmlentities($libelle)); ?>
+                                        Type de contrat : <?php print(htmlentities($libelle)); ?>
                                     </div>
                                 </div>
                             <?php }
                             if (("add" == $mode) || ("chg" == $mode)) { ?>
                                 <div class="row">
                                     <div class="col">
-                                        <input type="text" class="form-control" placeholder="Langue" id="libelle"
+                                        <input type="text" class="form-control" placeholder="Type de contrat"
+                                               id="libelle"
                                                name="libelle"
                                                value="<?php print(isset($libelle) ? htmlentities($libelle) : ""); ?>"
                                                autofocus>
