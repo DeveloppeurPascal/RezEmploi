@@ -4,12 +4,11 @@ define("REZEMPLOIKEY", "3f5gd4ng2h5j4gh24,gh2j54fd2g54fg2h45");
 if (("127.0.0.1" == $_SERVER["SERVER_ADDR"]) || ("::1" == $_SERVER["SERVER_ADDR"])) {
     /* accès en local (dev, test) */
     @include_once(__DIR__ . "/config-dev.inc.php");
-    require_once(__DIR__ . "/config-dist.inc.php");
 } else {
     /* accès sur serveur (production) */
     @include_once(__DIR__ . "/config-prod.inc.php");
-    require_once(__DIR__ . "/config-dist.inc.php");
 }
+require_once(__DIR__ . "/config-dist.inc.php");
 
 require_once(__DIR__ . "/" . ProtectedFolder . "/db_inc.php");
 
