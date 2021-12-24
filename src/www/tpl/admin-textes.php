@@ -38,7 +38,7 @@ if (("add" == $op) && $dsp) {
     if (empty($libelle)) {
         ajoute_erreur("Libellé obligatoire.", "libelle");
     } else {
-        $qry = $db->prepare("insert into pages (priv_key, libelle, titre, texte) values (:pk, :l, :ti, :te)");
+        $qry = $db->prepare("insert into textes (priv_key, libelle, titre, texte) values (:pk, :l, :ti, :te)");
         $qry->execute(array(":pk" => generer_identifiant(10), ":l" => $libelle, ":ti" => $titre, ":te" => $texte));
         ajoute_info("\"" . $libelle . "\" ajouté.");
         $mode = "add";
@@ -49,7 +49,7 @@ if (("add" == $op) && $dsp) {
 } else if (("chg" == $op) && $dsp) {
     // affichage de la page en modification
     $code = intval(isset($_POST["code"]) ? $_POST["code"] : "-1");
-    $qry = $db->prepare("select * from pages where code=:c");
+    $qry = $db->prepare("select * from textes where code=:c");
     $qry->execute(array(":c" => $code));
     if (false !== ($record = $qry->fetch(PDO::FETCH_OBJ))) {
         $libelle = $record->libelle;
@@ -69,11 +69,11 @@ if (("add" == $op) && $dsp) {
     if (empty($libelle)) {
         ajoute_erreur("Libellé obligatoire.", "libelle");
     } else {
-        $qry = $db->prepare("select * from pages where code=:c");
+        $qry = $db->prepare("select * from textes where code=:c");
         $qry->execute(array(":c" => $code));
         if ((false !== ($record = $qry->fetch(PDO::FETCH_OBJ))) && checkVerifChecksum($verif, KEY_VERIF, $record->code, $record->priv_key)) {
 
-            $qry = $db->prepare("update pages set libelle=:l, titre=:ti, texte=:te where code=:c");
+            $qry = $db->prepare("update textes set libelle=:l, titre=:ti, texte=:te where code=:c");
             $qry->execute(array(":c" => $code, ":l" => $libelle, ":ti" => $titre, ":te" => $texte));
             $mode = "lst";
         } else {
@@ -84,7 +84,7 @@ if (("add" == $op) && $dsp) {
 } else if (("dlt" == $op) && $dsp) {
     // affichage de la page en suppression
     $code = intval(isset($_POST["code"]) ? $_POST["code"] : "-1");
-    $qry = $db->prepare("select * from pages where code=:c");
+    $qry = $db->prepare("select * from textes where code=:c");
     $qry->execute(array(":c" => $code));
     if (false !== ($record = $qry->fetch(PDO::FETCH_OBJ))) {
         $libelle = $record->libelle;
@@ -98,10 +98,10 @@ if (("add" == $op) && $dsp) {
 } else if ("dlt" == $op) {
     // traitement des infos passées en suppression
     $code = intval(isset($_POST["code"]) ? $_POST["code"] : "-1");
-    $qry = $db->prepare("select * from pages where code=:c");
+    $qry = $db->prepare("select * from textes where code=:c");
     $qry->execute(array(":c" => $code));
     if ((false !== ($record = $qry->fetch(PDO::FETCH_OBJ))) && checkVerifChecksum($verif, KEY_VERIF, $record->code, $record->priv_key)) {
-        $qry = $db->prepare("delete from pages where code=:c");
+        $qry = $db->prepare("delete from textes where code=:c");
         $qry->execute(array(":c" => $code));
         $mode = "lst";
     } else {
@@ -111,7 +111,7 @@ if (("add" == $op) && $dsp) {
 } else if (("dsp" == $op) && $dsp) {
     // affichage de la page en détail
     $code = intval(isset($_POST["code"]) ? $_POST["code"] : "-1");
-    $qry = $db->prepare("select * from pages where code=:c");
+    $qry = $db->prepare("select * from textes where code=:c");
     $qry->execute(array(":c" => $code));
     if (false !== ($record = $qry->fetch(PDO::FETCH_OBJ))) {
         $libelle = $record->libelle;
@@ -130,26 +130,26 @@ if (("add" == $op) && $dsp) {
 
 switch ($mode) {
     case    "add":
-        $PageTitle = "Ajout d'une page au site";
+        $PageTitle = "Ajout d'un texte";
         break;
     case    "chg":
-        $PageTitle = "Modification de la page";
+        $PageTitle = "Modification du texte";
         break;
     case    "dlt":
-        $PageTitle = "Suppression de la page";
+        $PageTitle = "Suppression du texte";
         break;
     case    "dsp":
-        $PageTitle = "Détail de la page";
+        $PageTitle = "Détail du texte";
         break;
     case    "lst":
-        $PageTitle = "Liste des pages du site";
+        $PageTitle = "Liste des textes du site";
         break;
     default:
         // TODO : envoyer en 404 not found
 }
 require_once(__DIR__ . "/_header.php");
 ?>
-    <form action="admin-pages.php" method="post" id="frm">
+    <form action="admin-textes.php" method="post" id="frm">
     <input type="hidden" name="op" id="op" value="<?php print($mode); ?>">
     <input type="hidden" name="dsp" id="dsp" value="0">
     <input type="hidden" name="v" id="v"
@@ -163,7 +163,7 @@ require_once(__DIR__ . "/_header.php");
                 </div>
             </div>
             <?php if ("lst" == $mode) {
-                $qry = $db->prepare("select * from pages order by libelle");
+                $qry = $db->prepare("select * from textes order by libelle");
                 $qry->execute(array());
                 ?>
                 <table class="table text-center mt-5 d-table">

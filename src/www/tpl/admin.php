@@ -23,7 +23,7 @@ require_once(__DIR__ . "/_header.php");
         <li><a href="admin-types-contrats.php">Gestion des types de contrats</a></li>
         <li><a href="admin-types-diplomes.php">Gestion des types de diplômes</a></li>
         <li><a href="admin-types-realisations.php">Gestion des types de réalisations</a></li>
-        <li><a href="admin-pages.php">Gestion des pages du site</a></li>
+        <li><a href="admin-textes.php">Gestion des textes du site</a></li>
     </ul><?php
 require_once(__DIR__ . "/_footer.php");
 
