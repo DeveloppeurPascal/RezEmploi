@@ -50,7 +50,7 @@ require_once(__DIR__ . "/../" . ProtectedFolder . "/utilisateurs.php");
                         </li><?php }
                     if (isUtilisateurConnecteEntreprise()) { ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="entreprises.php">Entreprises</a>
+                            <a class="nav-link" href="mesentreprises.php">Mes entreprises</a>
                         </li><?php }
                     if (isUtilisateurConnecteModeration()) { ?>
                         <li class="nav-item">
