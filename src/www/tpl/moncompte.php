@@ -38,7 +38,6 @@ require_once(__DIR__ . "/_footer.php");
 // TODO : mise à jour de l'adresse email
 // TODO : changement de mot de passe
 // TODO : gestion 2FA
-// TODO : infos du CV
 // TODO : gestion de la liste des contacts
 // TODO : gestion de la liste des personnes suivies
 // TODO : gestion de la liste des entreprises suivies
