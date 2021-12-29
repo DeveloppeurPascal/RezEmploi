@@ -150,56 +150,56 @@ switch ($mode) {
 require_once(__DIR__ . "/_header.php");
 ?>
     <form action="admin-textes.php" method="post" id="frm">
-    <input type="hidden" name="op" id="op" value="<?php print($mode); ?>">
-    <input type="hidden" name="dsp" id="dsp" value="0">
-    <input type="hidden" name="v" id="v"
-           value="<?php print(getVerifChecksum(KEY_VERIF, (isset($code) ? $code : -1), (isset($priv_key) ? $priv_key : ""))); ?>">
-    <input type="hidden" name="code" id="code" value="<?php print(isset($code) ? $code : -1); ?>">
-    <section class="fdb-block pt-0">
-        <div class="container">
-            <div class="row text-center justify-content-center pt-5">
-                <div class="col-12 col-md-7">
-                    <h1><?php print($PageTitle); ?></h1>
-                </div>
-            </div>
-            <?php if ("lst" == $mode) {
-                $qry = $db->prepare("select * from textes order by libelle");
-                $qry->execute(array());
-                ?>
-                <table class="table text-center mt-5 d-table">
-                    <tbody>
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Emplacement</th>
-                        <th scope="col">Titre</th>
-                        <th scope="col">
-                            <button type="button" class="btn btn-primary" onclick="btnAjouterClick();">Ajouter</button>
-                        </th>
-                    </tr>
-                    <?php while (false !== ($record = $qry->fetch(PDO::FETCH_OBJ))) { ?>
-                        <tr>
-                            <td><?php print($record->code); ?></td>
-                            <td><?php print(htmlentities($record->libelle)); ?></td>
-                            <td><?php print(htmlentities($record->titre)); ?></td>
-                            <td>
-                                <button type="button" class="btn btn-primary"
-                                        onclick="btnAfficherClick(<?php print($record->code); ?>);">Afficher
-                                </button>
-                                <button type="button" class="btn btn-primary"
-                                        onclick="btnModifierClick(<?php print($record->code); ?>);">Modifier
-                                </button>
-                                <button type="button" class="btn btn-primary"
-                                        onclick="btnSupprimerClick(<?php print($record->code); ?>)">Supprimer
-                                </button>
-                            </td>
-                        </tr>
-                    <?php } ?>
-                    </tbody>
-                </table>
-            <?php } else { ?>
-                <div class="row justify-content-center pt-4">
+        <input type="hidden" name="op" id="op" value="<?php print($mode); ?>">
+        <input type="hidden" name="dsp" id="dsp" value="0">
+        <input type="hidden" name="v" id="v"
+               value="<?php print(getVerifChecksum(KEY_VERIF, (isset($code) ? $code : -1), (isset($priv_key) ? $priv_key : ""))); ?>">
+        <input type="hidden" name="code" id="code" value="<?php print(isset($code) ? $code : -1); ?>">
+        <section class="fdb-block pt-0">
+            <div class="container">
+                <div class="row text-center justify-content-center pt-5">
                     <div class="col-12 col-md-7">
-                        <form>
+                        <h1><?php print($PageTitle); ?></h1>
+                    </div>
+                </div>
+                <?php if ("lst" == $mode) {
+                    $qry = $db->prepare("select * from textes order by libelle");
+                    $qry->execute(array());
+                    ?>
+                    <table class="table text-center mt-5 d-table">
+                        <tbody>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Emplacement</th>
+                            <th scope="col">Titre</th>
+                            <th scope="col">
+                                <button type="button" class="btn btn-primary" onclick="btnAjouterClick();">Ajouter
+                                </button>
+                            </th>
+                        </tr>
+                        <?php while (false !== ($record = $qry->fetch(PDO::FETCH_OBJ))) { ?>
+                            <tr>
+                                <td><?php print($record->code); ?></td>
+                                <td><?php print(htmlentities($record->libelle)); ?></td>
+                                <td><?php print(htmlentities($record->titre)); ?></td>
+                                <td>
+                                    <button type="button" class="btn btn-primary"
+                                            onclick="btnAfficherClick(<?php print($record->code); ?>);">Afficher
+                                    </button>
+                                    <button type="button" class="btn btn-primary"
+                                            onclick="btnModifierClick(<?php print($record->code); ?>);">Modifier
+                                    </button>
+                                    <button type="button" class="btn btn-primary"
+                                            onclick="btnSupprimerClick(<?php print($record->code); ?>)">Supprimer
+                                    </button>
+                                </td>
+                            </tr>
+                        <?php } ?>
+                        </tbody>
+                    </table>
+                <?php } else { ?>
+                    <div class="row justify-content-center pt-4">
+                        <div class="col-12 col-md-7">
                             <?php if (("chg" == $mode) || ("dsp" == $mode) || ("dlt" == $mode)) { ?>
                                 <div class="row">
                                     <div class="col">
@@ -269,13 +269,13 @@ require_once(__DIR__ . "/_header.php");
                                     <?php } ?>
                                 </div>
                             </div>
-                        </form>
+                        </div>
                     </div>
-                </div>
-            <?php } ?>
-            <div class="row-100"></div>
-        </div>
-    </section>
+                <?php } ?>
+                <div class="row-100"></div>
+            </div>
+        </section>
+    </form>
     <script>
         function btnAjouterClick() {
             document.getElementById('code').value = -1;
