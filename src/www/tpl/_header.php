@@ -48,6 +48,10 @@ require_once(__DIR__ . "/../" . ProtectedFolder . "/utilisateurs.php");
                         <li class="nav-item">
                             <a class="nav-link" href="moncompte.php">Mon compte</a>
                         </li><?php }
+                    if (isUtilisateurConnecteParticulier()) { ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="moncv.php">Mon CV</a>
+                        </li><?php }
                     if (isUtilisateurConnecteEntreprise()) { ?>
                         <li class="nav-item">
                             <a class="nav-link" href="mesentreprises.php">Mes entreprises</a>
