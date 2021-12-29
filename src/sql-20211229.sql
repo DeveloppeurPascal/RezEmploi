@@ -195,3 +195,6 @@ CREATE TABLE `cv_langues`
 ALTER TABLE `cv_langues`
     ADD UNIQUE KEY `cv_langues_par_utilisateur` (`utilisateur_code`,`langue_code`),
     ADD UNIQUE KEY `cv_langues_par_langue` (`langue_code`,`utilisateur_code`);
+
+ALTER TABLE `cv_infos`
+    add `niveau_etude_code` int(11) NOT NULL,ADD UNIQUE KEY `cv_infos_par_niveau_etude` (`niveau_etude_code`,`code`);
