@@ -68,6 +68,10 @@ if (!defined("CopyrightEditeurURL"))
 if (!defined("CopyrightAnnee"))
     define("CopyrightAnnee", "2021");
 
+// année de départ pour les années de naissance
+if (!defined("StartAnneeNaissance"))
+    define("StartAnneeNaissance", "1900");
+
 // **********
 // Clés privées, tokens, ... pour signatures et accès divers
 // **********
@@ -91,6 +95,10 @@ if (!defined("KEY_SESSION_DROITS"))
 // KEY_VERIF : clé utilisée pour les calculs de checksum dans les écrans de mise à jour
 if (!defined("KEY_VERIF"))
     define("KEY_VERIF", "");
+
+// KEY_VERIF_INFOS_CV : clé utilisée pour les calculs de checksum dans les écrans de mise à jour
+if (!defined("KEY_VERIF_CV"))
+    define("KEY_VERIF_CV", "");
 
 // **********
 // Paramètres divers
