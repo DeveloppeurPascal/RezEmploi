@@ -146,6 +146,7 @@ function connexion_utilisateur($utilisateur): bool
         $e = isset($utilisateur->droit_entreprise) ? (1 == $utilisateur->droit_entreprise) : false;
         $_SESSION["droit_entreprise"] = $e;
         $_SESSION["key2"] = calculeSignatureDroitsSession($sa, $a, $m, $p, $e);
+        $_SESSION["priv_key"] = generer_identifiant(); // dans fonctions.php
         return true;
     } else {
         return false;
