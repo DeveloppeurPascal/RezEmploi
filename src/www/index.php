@@ -14,6 +14,8 @@ require_once(__DIR__ . "/" . ProtectedFolder . "/db_inc.php");
 
 if (is_object($db)) {
 
+    require_once(__DIR__ . "/" . ProtectedFolder . "/fonctions.php");
+
     // On récupère l'URL
     if (isset($_SERVER["REDIRECT_URL"])) {
         $page_demandee = $_SERVER["REDIRECT_URL"];
