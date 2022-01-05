@@ -157,7 +157,7 @@ require_once(__DIR__ . "/_header.php");
                         <tbody>
                         <tr>
                             <th scope="col">ID</th>
-                            <th scope="col">Niveau d'études</th>
+                            <th scope="col">Niveau en langues</th>
                             <th scope="col">
                                 <button type="button" class="btn btn-primary" onclick="btnAjouterClick();">Ajouter
                                 </button>
@@ -195,14 +195,14 @@ require_once(__DIR__ . "/_header.php");
                             if (("dsp" == $mode) || ("dlt" == $mode)) { ?>
                                 <div class="row">
                                     <div class="col">
-                                        Niveau d'études : <?php print(htmlentities($libelle)); ?>
+                                        Niveau en langues : <?php print(htmlentities($libelle)); ?>
                                     </div>
                                 </div>
                             <?php }
                             if (("add" == $mode) || ("chg" == $mode)) { ?>
                                 <div class="row">
                                     <div class="col">
-                                        <input type="text" class="form-control" placeholder="Niveau d'études"
+                                        <input type="text" class="form-control" placeholder="Niveau en langues"
                                                id="libelle"
                                                name="libelle"
                                                value="<?php print(isset($libelle) ? htmlentities($libelle) : ""); ?>"
