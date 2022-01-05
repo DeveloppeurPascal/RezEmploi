@@ -201,6 +201,7 @@ ALTER TABLE `cv_infos`
 
 -- ajout du 5 janvier 2022
 
+-- débutant, confirmé, expert, ...
 CREATE TABLE `niveaux_langues`
 (
     `code`     int(11) NOT NULL,
@@ -213,4 +214,19 @@ ALTER TABLE `niveaux_langues`
   ADD UNIQUE KEY `niveaux_langues_par_libelle` (`libelle`,`code`);
 
 ALTER TABLE `niveaux_langues`
+    MODIFY `code` int (11) NOT NULL AUTO_INCREMENT;
+
+-- oral, écrit, les deux
+CREATE TABLE `pratiques_langues`
+(
+    `code`     int(11) NOT NULL,
+    `priv_key` char(10)     NOT NULL,
+    `libelle`  varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE `pratiques_langues`
+    ADD PRIMARY KEY (`code`),
+  ADD UNIQUE KEY `pratiques_langues_par_libelle` (`libelle`,`code`);
+
+ALTER TABLE `pratiques_langues`
     MODIFY `code` int (11) NOT NULL AUTO_INCREMENT;

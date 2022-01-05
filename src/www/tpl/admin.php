@@ -18,6 +18,7 @@ require_once(__DIR__ . "/_header.php");
         <li><a href="admin-langues.php">Gestion des langues</a></li>
         <li><a href="admin-niveaux-etudes.php">Gestion des niveaux d'études</a></li>
         <li><a href="admin-niveaux-langues.php">Gestion des niveaux en langues</a></li>
+        <li><a href="admin-pratiques-langues.php">Gestion des pratiques en langues</a></li>
         <li><a href="admin-pays.php">Gestion des pays</a></li>
         <li><a href="admin-reseaux-sociaux.php">Gestion des réseaux sociaux</a></li>
         <li><a href="admin-rubriquescv.php">Gestion des rubriques sur les CV</a></li>
