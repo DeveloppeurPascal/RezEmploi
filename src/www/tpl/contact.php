@@ -11,7 +11,7 @@ require_once(__DIR__ . "/../" . ProtectedFolder . "/textesdusite.php");
     <form action="contact.php" method="post" id="frm">
     <input type="hidden" name="op" id="op" value="contact">
     <section class="fdb-block py-0">
-        <div class="container py-5 my-5" style="background-image: url(imgs/shapes/9.svg);">
+        <div class="container py-5 my-5">
             <div class="row py-5">
                 <div class="col py-5">
                     <div class="fdb-box fdb-touch">

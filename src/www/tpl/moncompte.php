@@ -14,7 +14,7 @@ $PageTitle = "Mon compte";
 require_once(__DIR__ . "/_header.php");
 require_once(__DIR__ . "/../" . ProtectedFolder . "/textesdusite.php"); ?>
     <section class="fdb-block py-0">
-    <div class="container py-5 my-5" style="background-image: url(imgs/shapes/9.svg);">
+    <div class="container py-5 my-5">
         <div class="row py-5">
             <div class="col py-5">
                 <div class="fdb-box fdb-touch">
