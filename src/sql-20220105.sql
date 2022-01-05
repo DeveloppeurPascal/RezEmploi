@@ -198,3 +198,19 @@ ALTER TABLE `cv_langues`
 
 ALTER TABLE `cv_infos`
     add `niveau_etude_code` int(11) NOT NULL,ADD UNIQUE KEY `cv_infos_par_niveau_etude` (`niveau_etude_code`,`code`);
+
+-- ajout du 5 janvier 2022
+
+CREATE TABLE `niveaux_langues`
+(
+    `code`     int(11) NOT NULL,
+    `priv_key` char(10)     NOT NULL,
+    `libelle`  varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE `niveaux_langues`
+    ADD PRIMARY KEY (`code`),
+  ADD UNIQUE KEY `niveaux_langues_par_libelle` (`libelle`,`code`);
+
+ALTER TABLE `niveaux_langues`
+    MODIFY `code` int (11) NOT NULL AUTO_INCREMENT;
