@@ -230,3 +230,9 @@ ALTER TABLE `pratiques_langues`
 
 ALTER TABLE `pratiques_langues`
     MODIFY `code` int (11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `cv_langues`
+    ADD `niveau_langue_code` int(11) NOT NULL,
+    ADD `pratique_langue_code` int(11) NOT NULL,
+ADD UNIQUE KEY `cv_langues_par_niveau_langue` (`niveau_langue_code`,`langue_code`),
+ADD UNIQUE KEY `cv_langues_par_pratique_langue` (`pratique_langue_code`,`langue_code`);
