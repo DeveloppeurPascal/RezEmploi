@@ -11,7 +11,7 @@ if (("127.0.0.1" == $_SERVER["SERVER_ADDR"]) || ("::1" == $_SERVER["SERVER_ADDR"
 require_once(__DIR__ . "/config-dist.inc.php");
 
 require_once(__DIR__ . "/" . ProtectedFolder . "/db_inc.php");
-/*
+
 if (is_object($db)) {
 
     require_once(__DIR__ . "/" . ProtectedFolder . "/fonctions.php");
@@ -66,4 +66,3 @@ if (is_object($db)) {
 } else {
     http_response_code(404);
 }
-*/
