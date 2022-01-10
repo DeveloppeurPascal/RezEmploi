@@ -58,3 +58,14 @@ function checkVerifChecksum($verif, $param, $key1 = "", $key2 = "", $key3 = "", 
     }
     return (false !== strpos(getVerifChecksum($param, $key1, $key2, $key3, $key4, $key5, false), $verif));
 }
+
+// Retourne le HTML affichant le logo lié à un site web ("globe" ou celui passé en paramètre à partir de la librairie Bootstrap Icon
+function getIconHTML($bootstrap_icon, $defaulticon = "globe", $id = "")
+{
+    $bi = (empty($bootstrap_icon) ? (empty($defaulticon) ? "" : $defaulticon) : $bootstrap_icon);
+    if (empty($bi)) {
+        return "";
+    } else {
+        return "<i class=\"bi bi-" . htmlentities($bi) . "\"" . (empty($id) ? "" : " id=\"" . $id . "\"") . "></i>";
+    }
+}

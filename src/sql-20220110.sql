@@ -236,3 +236,7 @@ ALTER TABLE `cv_langues`
     ADD `pratique_langue_code` int(11) NOT NULL,
 ADD UNIQUE KEY `cv_langues_par_niveau_langue` (`niveau_langue_code`,`langue_code`),
 ADD UNIQUE KEY `cv_langues_par_pratique_langue` (`pratique_langue_code`,`langue_code`);
+
+-- ajout du 10 janvier 2022
+
+alter table reseaux_sociaux add bootstrap_icon varchar(255) not null default "";

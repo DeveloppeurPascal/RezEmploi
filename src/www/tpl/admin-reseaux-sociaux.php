@@ -28,17 +28,20 @@ if (("add" == $op) && $dsp) {
     // affichage de la page en ajout
     $code = -1;
     $libelle = "";
+    $bootstrap_icon = "";
 } else if ("add" == $op) {
     // traitement des infos passées en ajout
     $libelle = isset($_POST["libelle"]) ? trim(strip_tags($_POST["libelle"])) : "";
     if (empty($libelle)) {
         ajoute_erreur("Libellé obligatoire.", "libelle");
     } else {
-        $qry = $db->prepare("insert into reseaux_sociaux (priv_key, libelle) values (:pk, :l)");
-        $qry->execute(array(":pk" => generer_identifiant(10), ":l" => $libelle));
+        $bootstrap_icon = isset($_POST["booticon"]) ? trim(strip_tags($_POST["booticon"])) : "";
+        $qry = $db->prepare("insert into reseaux_sociaux (priv_key, libelle, bootstrap_icon) values (:pk, :l, :bi)");
+        $qry->execute(array(":pk" => generer_identifiant(10), ":l" => $libelle, ":bi" => $bootstrap_icon));
         ajoute_info("\"" . $libelle . "\" ajouté.");
         $mode = "add";
         $libelle = "";
+        $bootstrap_icon = "";
     }
 } else if (("chg" == $op) && $dsp) {
     // affichage de la page en modification
@@ -48,6 +51,7 @@ if (("add" == $op) && $dsp) {
     if (false !== ($record = $qry->fetch(PDO::FETCH_OBJ))) {
         $libelle = $record->libelle;
         $priv_key = $record->priv_key;
+        $bootstrap_icon = $record->bootstrap_icon;
     } else {
         ajoute_erreur("Enregistrement inexistant, modification impossible.");
         $mode = "lst";
@@ -59,13 +63,12 @@ if (("add" == $op) && $dsp) {
     if (empty($libelle)) {
         ajoute_erreur("Libellé obligatoire.", "libelle");
     } else {
+        $bootstrap_icon = isset($_POST["booticon"]) ? trim(strip_tags($_POST["booticon"])) : "";
         $qry = $db->prepare("select * from reseaux_sociaux where code=:c");
         $qry->execute(array(":c" => $code));
         if ((false !== ($record = $qry->fetch(PDO::FETCH_OBJ))) && checkVerifChecksum($verif, KEY_VERIF, $record->code, $record->priv_key)) {
-            if ($libelle != $record->libelle) {
-                $qry = $db->prepare("update reseaux_sociaux set libelle=:l where code=:c");
-                $qry->execute(array(":c" => $code, ":l" => $libelle));
-            }
+            $qry = $db->prepare("update reseaux_sociaux set libelle=:l, bootstrap_icon=:bi where code=:c");
+            $qry->execute(array(":c" => $code, ":l" => $libelle, ":bi" => $bootstrap_icon));
             $mode = "lst";
         } else {
             ajoute_erreur("Enregistrement inexistant, modification impossible.");
@@ -80,6 +83,7 @@ if (("add" == $op) && $dsp) {
     if (false !== ($record = $qry->fetch(PDO::FETCH_OBJ))) {
         $libelle = $record->libelle;
         $priv_key = $record->priv_key;
+        $bootstrap_icon = $record->bootstrap_icon;
     } else {
         ajoute_erreur("Enregistrement inexistant, suppression impossible.");
         $mode = "lst";
@@ -104,6 +108,7 @@ if (("add" == $op) && $dsp) {
     $qry->execute(array(":c" => $code));
     if (false !== ($record = $qry->fetch(PDO::FETCH_OBJ))) {
         $libelle = $record->libelle;
+        $bootstrap_icon = $record->bootstrap_icon;
     } else {
         ajoute_erreur("Enregistrement inexistant, affichage impossible.");
         $mode = "lst";
@@ -113,6 +118,7 @@ if (("add" == $op) && $dsp) {
     $mode = "lst";
     $code = -1;
     $libelle = "";
+    $bootstrap_icon = "";
 }
 
 switch ($mode) {
@@ -166,7 +172,10 @@ require_once(__DIR__ . "/_header.php");
                         <?php while (false !== ($record = $qry->fetch(PDO::FETCH_OBJ))) { ?>
                             <tr>
                                 <td><?php print($record->code); ?></td>
-                                <td><?php print(htmlentities($record->libelle)); ?></td>
+                                <td><?php
+                                    print(getIconHTML($record->bootstrap_icon) . " ");
+                                    print(htmlentities($record->libelle));
+                                    ?></td>
                                 <td>
                                     <button type="button" class="btn btn-primary"
                                             onclick="btnAfficherClick(<?php print($record->code); ?>);">Afficher
@@ -195,7 +204,10 @@ require_once(__DIR__ . "/_header.php");
                             if (("dsp" == $mode) || ("dlt" == $mode)) { ?>
                                 <div class="row">
                                     <div class="col">
-                                        Réseau social : <?php print(htmlentities($libelle)); ?>
+                                        Réseau social : <?php
+                                        print(getIconHTML($record->bootstrap_icon) . " ");
+                                        print(htmlentities($libelle));
+                                        ?>
                                     </div>
                                 </div>
                             <?php }
@@ -206,6 +218,18 @@ require_once(__DIR__ . "/_header.php");
                                                name="libelle"
                                                value="<?php print(isset($libelle) ? htmlentities($libelle) : ""); ?>"
                                                autofocus>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <input type="text" class="form-control" placeholder="Icone associée"
+                                               id="booticon"
+                                               name="booticon"
+                                               value="<?php print(isset($bootstrap_icon) ? htmlentities($bootstrap_icon) : ""); ?>"
+                                               onchange="AfficheIcone();"><br/>
+                                        <?php print(getIconHTML($bootstrap_icon, "globe", "booticonimg") . " "); ?>
+                                        <a href="https://icons.getbootstrap.com" target="_blank">Bootstrap Icons</a> -
+                                        ne pas mettre "bi-" devant, juste le nom de l'icone.
                                     </div>
                                 </div>
                             <?php } ?>
@@ -273,7 +297,22 @@ require_once(__DIR__ . "/_header.php");
             document.getElementById('dsp').value = '1';
             document.getElementById('frm').submit();
         }
+
+        function AfficheIcone() {
+            bi = document.getElementById('booticon').value.trim();
+            if (bi.length > 0) {
+                if (bi != bi.toLowerCase()) {
+                    bi = bi.toLowerCase();
+                    document.getElementById('booticon').value = bi;
+                }
+                document.getElementById('booticonimg').className = 'bi bi-' + bi;
+            } else {
+                document.getElementById('booticonimg').className = 'bi bi-globe';
+            }
+        }
     </script><?php
 require_once(__DIR__ . "/_erreur-formulaire.php");
 require_once(__DIR__ . "/_info-bloc-html.php");
 require_once(__DIR__ . "/_footer.php");
+
+// TODO : lors de la saisie de la classe d'icone, s'assurer qu'elle existe dans la feuille de style des Bootstrap Icons
