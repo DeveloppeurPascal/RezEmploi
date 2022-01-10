@@ -240,3 +240,13 @@ ADD UNIQUE KEY `cv_langues_par_pratique_langue` (`pratique_langue_code`,`langue_
 -- ajout du 10 janvier 2022
 
 alter table reseaux_sociaux add bootstrap_icon varchar(255) not null default "";
+
+CREATE TABLE `cv_reseaux_sociaux` (
+                              `reseau_social_code` int(11) NOT NULL,
+                              `priv_key` char(10) NOT NULL,
+                              `utilisateur_code` int(11) NOT NULL,
+                              url varchar(255) not null default ""
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+ALTER TABLE `cv_reseaux_sociaux`
+    ADD UNIQUE KEY `cv_reseaux_sociaux_par_utilisateur` (`utilisateur_code`,`reseau_social_code`),
+    ADD UNIQUE KEY `cv_reseaux_sociaux_par_reseau` (`reseau_social_code`,`utilisateur_code`);

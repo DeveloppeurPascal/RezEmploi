@@ -177,12 +177,15 @@ if (("chginfos" == $op) && (!$dsp)) {
                     $mode = "lstlangues";
                 } else {
                     ajoute_erreur("Pratique inexistante, modification impossible.");
+                    $mode = "lstlangues";
                 }
             } else {
                 ajoute_erreur("Niveau inexistant, modification impossible.");
+                $mode = "lstlangues";
             }
         } else {
             ajoute_erreur("Langue inexistante, modification impossible.");
+            $mode = "lstlangues";
         }
     }
 } else if (("dltlangue" == $op) && $dsp) {
@@ -223,6 +226,87 @@ if (("chginfos" == $op) && (!$dsp)) {
             ajoute_erreur("Enregistrement inexistant, suppression impossible.");
         }
         $mode = "lstlangues";
+    }
+} else if (("chgreseausocial" == $op) && $dsp) {
+    // affichage de la page en modification ou ajout
+    $reseau_social_code = intval(isset($_POST["code"]) ? $_POST["code"] : "-1");
+    if (-1 == $reseau_social_code) {
+        $code = -1;
+        $url = "";
+    } else {
+        $code = $reseau_social_code;
+        $qry = $db->prepare("select * from cv_reseaux_sociaux where reseau_social_code=:rsc and utilisateur_code=:uc");
+        $qry->execute(array(":rsc" => $reseau_social_code, ":uc" => $UtilisateurConnecte->code));
+        if (false !== ($record = $qry->fetch(PDO::FETCH_OBJ))) {
+            $priv_key = $record->priv_key;
+            $url = $record->url;
+        } else {
+            ajoute_erreur("Enregistrement inexistant, modification impossible.");
+            $mode = "dsp";
+        }
+    }
+} else if ("chgreseausocial" == $op) {
+    // traitement des infos passées en modification
+    $code = intval(isset($_POST["code"]) ? $_POST["code"] : "-1");
+    if (!checkVerifChecksum($verif, KEY_VERIF_CV, $_SESSION["priv_key"], $UtilisateurConnecte->code, $UtilisateurConnecte->priv_key, $code)) {
+        ajoute_erreur("Mise à jour impossible. Données incohérentes.");
+        $code = -1;
+        $mode = "lstreseauxsociaux";
+    } else {
+        $reseau_social_code = intval(isset($_POST["reseau_social_code"]) ? $_POST["reseau_social_code"] : "-1");
+        $qry = $db->prepare("select code from reseaux_sociaux where code=:c");
+        $qry->execute(array(":c" => $reseau_social_code));
+        if (false !== ($record = $qry->fetch(PDO::FETCH_OBJ))) {
+            $url = isset($_POST["url"]) ? trim(strip_tags($_POST["url"])) : "";
+            if (-1 == $code) { // Ajout
+                $qry = $db->prepare("insert into cv_reseaux_sociaux (reseau_social_code, utilisateur_code, priv_key, url) values (:rsc, :uc, :pk, :url)");
+                $qry->execute(array(":pk" => generer_identifiant(), ":uc" => $UtilisateurConnecte->code, ":rsc" => $reseau_social_code, ":url" => $url));
+            } else { // Mise à jour
+                $qry = $db->prepare("update cv_reseaux_sociaux set reseau_social_code=:rsc, url=:url where reseau_social_code=:c and utilisateur_code=:uc");
+                $qry->execute(array(":c" => $code, ":uc" => $UtilisateurConnecte->code, ":rsc" => $reseau_social_code, ":url" => $url));
+            }
+            $mode = "lstreseauxsociaux";
+        } else {
+            ajoute_erreur("Réseau social inexistant, modification impossible.");
+            $mode = "lstreseauxsociaux";
+        }
+    }
+} else if (("dltreseausocial" == $op) && $dsp) {
+    // affichage de la page en suppression
+    $reseau_social_code = intval(isset($_POST["code"]) ? $_POST["code"] : "-1");
+    if (-1 == $reseau_social_code) {
+        $code = -1;
+        $url = "";
+    } else {
+        $code = $reseau_social_code;
+        $qry = $db->prepare("select * from cv_reseaux_sociaux where reseau_social_code=:rsc and utilisateur_code=:uc");
+        $qry->execute(array(":rsc" => $reseau_social_code, ":uc" => $UtilisateurConnecte->code));
+        if (false !== ($record = $qry->fetch(PDO::FETCH_OBJ))) {
+            $priv_key = $record->priv_key;
+            $url = $record->url;
+        } else {
+            ajoute_erreur("Enregistrement inexistant, modification impossible.");
+            $mode = "dsp";
+        }
+    }
+} else if ("dltreseausocial" == $op) {
+    // traitement des infos passées en suppression
+    $code = intval(isset($_POST["code"]) ? $_POST["code"] : "-1");
+    if (!checkVerifChecksum($verif, KEY_VERIF_CV, $_SESSION["priv_key"], $UtilisateurConnecte->code, $UtilisateurConnecte->priv_key, $code)) {
+        ajoute_erreur("Mise à jour impossible. Données incohérentes.");
+        $code = -1;
+        $mode = "lstreseauxsociaux";
+    } else {
+        $reseau_social_code = $code;
+        $qry = $db->prepare("select * from cv_reseaux_sociaux where reseau_social_code=:rsc and utilisateur_code=:uc");
+        $qry->execute(array(":rsc" => $reseau_social_code, ":uc" => $UtilisateurConnecte->code));
+        if (false !== ($record = $qry->fetch(PDO::FETCH_OBJ))) {
+            $qry = $db->prepare("delete from cv_reseaux_sociaux where reseau_social_code=:rsc and utilisateur_code=:uc");
+            $qry->execute(array(":rsc" => $reseau_social_code, ":uc" => $UtilisateurConnecte->code));
+        } else {
+            ajoute_erreur("Enregistrement inexistant, suppression impossible.");
+        }
+        $mode = "lstreseauxsociaux";
     }
 }
 
@@ -584,6 +668,154 @@ require_once(__DIR__ . "/../" . ProtectedFolder . "/textesdusite.php"); ?>
             </div>
             </section><?php
         }
+
+        // **************************************************
+        // Bloc des réseaux sociaux
+        if (("dsp" == $mode) || ("lstreseauxsociaux" == $mode) || ("chgreseausocial" == $mode) || ("dltreseausocial" == $mode)) {
+            ?>
+            <section class="fdb-block pt-0">
+            <div class="container">
+                <div class="row text-center justify-content-center pt-5">
+                    <div class="col-12 col-md-7">
+                        <h1>Réseaux sociaux et sites web</h1>
+                    </div>
+                </div>
+                <div class="row justify-content-center pt-4">
+                    <div class="col-12 col-md-7">
+                        <?php
+                        if (("dsp" == $mode) || ("lstreseauxsociaux" == $mode)) {
+                            $qry = $db->prepare("select cv.reseau_social_code as cv_code, rs.libelle as reseau_social_libelle, cv.url from cv_reseaux_sociaux cv, reseaux_sociaux rs where (cv.utilisateur_code=:uc) and (cv.reseau_social_code=rs.code) order by rs.libelle");
+                            $qry->execute(array(":uc" => $UtilisateurConnecte->code));
+                            ?>
+                            <table class="table text-center mt-5 d-table">
+                            <tbody>
+                            <tr>
+                                <th scope="col">Réseau social</th>
+                                <th scope="col">URL</th>
+                                <th scope="col">
+                                    <button type="button" class="btn btn-primary"
+                                            onclick="btnAjouterReseauSocialClick();">Ajouter
+                                    </button>
+                                </th>
+                            </tr>
+                            <?php while (false !== ($record = $qry->fetch(PDO::FETCH_OBJ))) { ?>
+                                <tr>
+                                    <td><?php print(htmlentities($record->reseau_social_libelle)); ?></td>
+                                    <td><?php
+                                        if (!empty($record->url)) {
+                                            $url = htmlentities($record->url);
+                                            print("<a href=\"" . $url . "\" target='\"_blank\"'>" . $url . "</a>");
+                                        } ?></td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary"
+                                                onclick="btnModifierReseauSocialClick(<?php print($record->cv_code); ?>);">
+                                            Modifier
+                                        </button>
+                                        <button type="button" class="btn btn-primary"
+                                                onclick="btnSupprimerReseauSocialClick(<?php print($record->cv_code); ?>)">
+                                            Supprimer
+                                        </button>
+                                    </td>
+                                </tr>
+                            <?php } ?>
+                            </tbody>
+                            </table><?php
+                            if ("lstreseauxsociaux" == $mode) {
+                                ?>
+                                <div class="row mt-4">
+                                    <div class="col text-center">
+                                        <button type="button" class="btn btn-primary" onclick="btnRetourClick();">
+                                            Retour
+                                        </button>
+                                    </div>
+                                </div>
+                                <?php
+                            }
+                        } else if ("chgreseausocial" == $mode) { ?>
+                            <div class="row">
+                                <?php if (-1 < $reseau_social_code) { ?>
+                                    <div class="col">Réseau social : <?php
+                                        $qry = $db->prepare("select * from reseaux_sociaux where code=:c");
+                                        $qry->execute(array(":c" => $reseau_social_code));
+                                        if (false !== ($record = $qry->fetch(PDO::FETCH_OBJ))) {
+                                            print(getIconHTML($record->bootstrap_icon) . " " . htmlentities($record->libelle));
+                                        } else {
+                                            print("n/a");
+                                        }
+                                        ?></div><input type="hidden" name="reseau_social_code"
+                                                       value="<?php print($reseau_social_code); ?>">
+                                <?php } else { ?>
+                                    <div class="col"><label for="reseau_social_code">Réseau social</label>
+                                        <select class="form-control" id="reseau_social_code"
+                                                name="reseau_social_code"><?php
+                                            $qry = $db->prepare("select * from reseaux_sociaux order by libelle");
+                                            $qry->execute();
+                                            while (false !== ($record = $qry->fetch(PDO::FETCH_OBJ))) {
+                                                print("<OPTION VALUE=\"" . $record->code . "\"" . (($reseau_social_code == $record->code) ? " selected" : "") . ">" . htmlentities($record->libelle) . "</OPTION>");
+                                            }
+                                            ?></select>
+                                    </div>
+                                <?php } ?>
+                            </div>
+                            <div class="row">
+                                <div class="col"><label for="url">Adresse du site</label>
+                                    <input type="text" class="form-control" id="url" name="url"
+                                           placeholder="https://gloubiboulga.com"
+                                           value="<?php print(htmlentities($url)); ?>">
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col text-center">
+                                    <button type="submit" class="btn btn-success">Enregistrer</button>
+                                    <button type="button" class="btn btn-warning"
+                                            onclick="btnAnnulerClick('lstreseauxsociaux');">
+                                        Annuler
+                                    </button>
+                                    <button type="button" class="btn btn-primary" onclick="btnRetourClick();">
+                                        Retour
+                                    </button>
+                                </div>
+                            </div><?php
+                        } else if ("dltreseausocial" == $mode) { ?>
+                            <div class="row">
+                                <div class="col">Réseau social : <?php
+                                    $qry = $db->prepare("select * from reseaux_sociaux where code=:c");
+                                    $qry->execute(array(":c" => $reseau_social_code));
+                                    if (false !== ($record = $qry->fetch(PDO::FETCH_OBJ))) {
+                                        print(getIconHTML($record->bootstrap_icon) . " " . htmlentities($record->libelle));
+                                    } else {
+                                        print("n/a");
+                                    }
+                                    ?></div>
+                            </div>
+                            <div class="row">
+                                <div class="col">Adresse du site : <?php
+                                    print(htmlentities($url));
+                                    ?></div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col text-center">
+                                    <button type="submit" class="btn btn-success">Supprimer</button>
+                                    <button type="button" class="btn btn-warning"
+                                            onclick="btnAnnulerClick('lstreseauxsociaux');">
+                                        Annuler
+                                    </button>
+                                    <button type="button" class="btn btn-primary" onclick="btnRetourClick();">
+                                        Retour
+                                    </button>
+                                </div>
+                            </div><?php
+                        } ?>
+                    </div>
+                </div>
+                <div class="row-100"></div>
+            </div>
+            </section><?php
+        }
+        // TODO : ajouter un écran de consultation de l'URL associée à un réseau social
+
+        // **************************************************
+        // Fin de page
         ?>
     </form>
 
@@ -605,6 +837,27 @@ require_once(__DIR__ . "/../" . ProtectedFolder . "/textesdusite.php"); ?>
         function btnSupprimerLangueClick(id) {
             document.getElementById('code').value = id;
             document.getElementById('op').value = 'dltlangue';
+            document.getElementById('dsp').value = '1';
+            document.getElementById('frm').submit();
+        }
+
+        function btnAjouterReseauSocialClick() {
+            document.getElementById('code').value = -1;
+            document.getElementById('op').value = 'chgreseausocial';
+            document.getElementById('dsp').value = '1';
+            document.getElementById('frm').submit();
+        }
+
+        function btnModifierReseauSocialClick(id) {
+            document.getElementById('code').value = id;
+            document.getElementById('op').value = 'chgreseausocial';
+            document.getElementById('dsp').value = '1';
+            document.getElementById('frm').submit();
+        }
+
+        function btnSupprimerReseauSocialClick(id) {
+            document.getElementById('code').value = id;
+            document.getElementById('op').value = 'dltreseausocial';
             document.getElementById('dsp').value = '1';
             document.getElementById('frm').submit();
         }
