@@ -205,18 +205,24 @@ if (("chginfos" == $op) && (!$dsp)) {
             $mode = "dsp";
         }
     }
-} else if ("dlt" == $op) {
+} else if ("dltlangue" == $op) {
     // traitement des infos passées en suppression
     $code = intval(isset($_POST["code"]) ? $_POST["code"] : "-1");
-    $qry = $db->prepare("select * from langues where code=:c");
-    $qry->execute(array(":c" => $code));
-    if ((false !== ($record = $qry->fetch(PDO::FETCH_OBJ))) && checkVerifChecksum($verif, KEY_VERIF, $record->code, $record->priv_key)) {
-        $qry = $db->prepare("delete from langues where code=:c");
-        $qry->execute(array(":c" => $code));
-        $mode = "lst";
+    if (!checkVerifChecksum($verif, KEY_VERIF_CV, $_SESSION["priv_key"], $UtilisateurConnecte->code, $UtilisateurConnecte->priv_key, $code)) {
+        ajoute_erreur("Mise à jour impossible. Données incohérentes.");
+        $code = -1;
+        $mode = "lstlangues";
     } else {
-        ajoute_erreur("Enregistrement inexistant, suppression impossible.");
-        $mode = "lst";
+        $langue_code = $code;
+        $qry = $db->prepare("select * from cv_langues where langue_code=:lc and utilisateur_code=:uc");
+        $qry->execute(array(":lc" => $langue_code, ":uc" => $UtilisateurConnecte->code));
+        if (false !== ($record = $qry->fetch(PDO::FETCH_OBJ))) {
+            $qry = $db->prepare("delete from cv_langues where langue_code=:lc and utilisateur_code=:uc");
+            $qry->execute(array(":lc" => $langue_code, ":uc" => $UtilisateurConnecte->code));
+        } else {
+            ajoute_erreur("Enregistrement inexistant, suppression impossible.");
+        }
+        $mode = "lstlangues";
     }
 }
 
